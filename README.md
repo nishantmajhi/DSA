@@ -1,4 +1,4 @@
-# DSA 🥥
+# coco !: 🥥
 
 A vanilla HTML/CSS/JS reference site for Data Structures and Algorithms — built as a project to learn JavaScript by making something useful rather than following tutorials.
 
