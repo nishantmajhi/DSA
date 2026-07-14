@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quick Sort</title>
+
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
+    <link rel="stylesheet" href="../../assets/css/pages.css" />
+
+    <script src="../../assets/js/copyCode.js"></script>
+    <script src="../../assets/js/formatJScode.js"></script>
+  </head>
+  <body>
+    <main>
+      <h3>Quick Sort</h3>
+      <p>Quick sort selects a pivot, partitions elements around it, then recursively sorts each partition. Time complexity: O(n log n) average, O(n²) worst case.</p>
+      <section>
+        <code class="javascript">
+          <pre id="quick_sort">
+          </pre>
+        </code>
+        <script>
+          document.addEventListener("DOMContentLoaded", () => {
+            const jsCode = `function quickSort(arr, low, high) {
+  low = low === undefined ? 0 : low;
+  high = high === undefined ? arr.length - 1 : high;
+
+  if (low < high) {
+    const pivotIndex = partition(arr, low, high);
+    // recursively sort elements before and after the pivot
+    quickSort(arr, low, pivotIndex - 1);
+    quickSort(arr, pivotIndex + 1, high);
+  }
+
+  return arr;
+}
+
+function partition(arr, low, high) {
+  // use the last element as pivot
+  const pivot = arr[high];
+  let i = low - 1;
+
+  for (let j = low; j < high; j++) {
+    if (arr[j] <= pivot) {
+      i++;
+      let temp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = temp;
+    }
+  }
+
+  // place pivot in its correct position
+  let temp = arr[i + 1];
+  arr[i + 1] = arr[high];
+  arr[high] = temp;
+
+  return i + 1;
+}`;
+            const block = document.getElementById("quick_sort");
+            if (block) {
+              block.textContent = jsCode;
+              const formatter = new JSCodeFormatter();
+              formatter.formatCodeBlock(block);
+            }
+          });
+        </script>
+      </section>
+    </main>
+  </body>
+</html>

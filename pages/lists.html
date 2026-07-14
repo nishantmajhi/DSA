@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lists</title>
+
+    <link rel="stylesheet" href="../assets/css/theme.css" />
+    <link rel="stylesheet" href="../assets/css/pages.css" />
+
+    <script src="../assets/js/copyCode.js"></script>
+    <script src="../assets/js/formatJScode.js"></script>
+  </head>
+  <body>
+    <main>
+      <h3>List</h3>
+      <p>
+        A list is an abstract data type which is a collection of elements
+        arranged in a linear order.
+      </p>
+      <h3>Types of List</h3>
+      <ol>
+        <li>Static List</li>
+        <ul>
+          <li>
+            <a
+              href="../analysis/List/Array.md"
+              download="Array Based List - Analysis.md"
+              title="Download Analysis File"
+              >Array Based</a
+            >
+          </li>
+        </ul>
+        <section>
+          <code class="javascript">
+            <pre id="array">class List {
+  constructor(initialArray) {
+    this.data = [];
+    this.size = 0;
+
+    if (initialArray instanceof Array) {
+      const length = initialArray.length;
+      
+      for (let i = 0; i &lt; length; i++) {
+        this.insert(initialArray[i]);
+      }
+
+      this.size = length;
+    }
+  }
+
+  insert(value, index = this.size) {
+    if (index &lt; 0 || index &gt; this.size) {
+      console.log("Invalid index");
+      return;
+    } else if (index == 0) {
+      // shift all elements one step to the right
+      for (let i = this.size; i &gt; 0; i--) {
+        this.data[i] = this.data[i - 1];
+      }
+      // insert value at the beginning
+      this.data[0] = value;
+      this.size++;
+    } else if (index &lt; this.size) {
+      // shift elements from index onwards one step to the right
+      for (let i = this.size; i &gt; index; i--) {
+        this.data[i] = this.data[i - 1];
+      }
+      // insert value at the specified index
+      this.data[index] = value;
+      this.size++;
+    } else {
+      // insert value at the end
+      this.data[this.size] = value;
+      this.size++;
+    }
+  }
+
+  indexOutOfBound(index) {
+    return index &lt; 0 || index &gt;= this.size;
+  }
+
+  remove(index) {
+    if (this.indexOutOfBound(index)) {
+      console.log("Invalid index");
+      return;
+    }
+
+    // shift elements left to overwrite the removed element
+    for (let i = index; i &lt; this.size - 1; i++) {
+      this.data[i] = this.data[i + 1];
+    }
+
+    this.size--;
+    this.data.length = this.size;
+  }
+
+  get(index) {
+    if (this.indexOutOfBound(index)) {
+      console.log("Invalid index");
+      return null;
+    }
+
+    return this.data[index];
+  }
+
+  update(newValue, index) {
+    if (this.indexOutOfBound(index)) {
+      console.log("Invalid index");
+      return;
+    }
+
+    this.data[index] = newValue;
+  }
+
+  search(value) {
+    for (let i = 0; i &lt; this.size; i++) {
+      if (this.data[i] === value) {
+        return i;
+      }
+    }
+    console.log(`${value} not found!`);
+    return -1;
+  }
+
+  traverse() {
+    for (let i = 0; i &lt; this.size; i++) {
+      console.log(this.data[i]);
+    }
+  }
+
+  reverse() {
+    let left = 0;
+    let right = this.size - 1;
+
+    // shift elements from both ends toward the center
+    while (left &lt; right) {
+      // swap elements at left and right indices
+      let temp = this.data[left];
+      this.data[left] = this.data[right];
+      this.data[right] = temp;
+
+      // move pointers inward
+      left++;
+      right--;
+    }
+  }
+}
+</pre>
+          </code>
+          <script>
+            document.addEventListener("DOMContentLoaded", () => {
+              const targetBlock = document.getElementById("array");
+              if (targetBlock) {
+                const formatter = new JSCodeFormatter();
+                formatter.formatCodeBlock(targetBlock);
+              }
+            });
+          </script>
+        </section>
+
+        <li>Dynamic List</li>
+        <ul>
+          <li>
+            <a
+              href="../analysis/List/LinkedList.md"
+              download="Linked List Based List - Analysis.md"
+              title="Download Analysis File"
+              >Linked List Based</a
+            >
+          </li>
+        </ul>
+
+        <section>
+          <code class="javascript">
+            <pre id="linked_list">class Node {
+  constructor(value) {
+    this.value = value;
+    this.next = null;
+  }
+}
+
+class LinkedList {
+  constructor(initialArray) {
+    this.head = null;
+    this.size = 0;
+
+    if (initialArray instanceof Array) {
+      for (let i = 0; i &lt; initialArray.length; i++) {
+        this.insert(initialArray[i]);
+      }
+    }
+  }
+
+  insert(value, index = this.size) {
+    if (index &lt; 0 || index &gt; this.size) {
+      console.log("Invalid index");
+      return;
+    }
+
+    const newNode = new Node(value);
+
+    if (index == 0) {
+      // shift head to the right by pointing new node to current head
+      newNode.next = this.head;
+      // insert new node at the beginning
+      this.head = newNode;
+      this.size++;
+    } else if (index &lt; this.size) {
+      // traverse to the node before the insertion point
+      let current = this.head;
+      for (let i = 0; i &lt; index - 1; i++) {
+        current = current.next;
+      }
+      // shift the next pointer to the right
+      newNode.next = current.next;
+      // insert new node at the specified index
+      current.next = newNode;
+      this.size++;
+    } else {
+      // traverse to the last node
+      let current = this.head;
+      for (let i = 0; i &lt; this.size - 1; i++) {
+        current = current.next;
+      }
+      // insert new node at the end
+      current.next = newNode;
+      this.size++;
+    }
+  }
+
+  indexOutOfBound(index) {
+    return index &lt; 0 || index &gt;= this.size;
+  }
+
+  remove(index) {
+    if (this.indexOutOfBound(index)) {
+      console.log("Invalid index");
+      return;
+    }
+
+    if (index == 0) {
+      // shift head to the left by pointing it to the next node
+      this.head = this.head.next;
+      this.size--;
+    } else {
+      // traverse to the node before the one to be removed
+      let current = this.head;
+      for (let i = 0; i &lt; index - 1; i++) {
+        current = current.next;
+      }
+      // shift the next pointer to skip the removed node
+      current.next = current.next.next;
+      this.size--;
+    }
+  }
+
+  get(index) {
+    if (this.indexOutOfBound(index)) {
+      console.log("Invalid index");
+      return null;
+    }
+
+    let current = this.head;
+    for (let i = 0; i &lt; index; i++) {
+      current = current.next;
+    }
+
+    return current.value;
+  }
+
+  update(newValue, index) {
+    if (this.indexOutOfBound(index)) {
+      console.log("Invalid index");
+      return;
+    }
+
+    let current = this.head;
+    for (let i = 0; i &lt; index; i++) {
+      current = current.next;
+    }
+
+    current.value = newValue;
+  }
+
+  search(value) {
+    let current = this.head;
+    for (let i = 0; i &lt; this.size; i++) {
+      if (current.value === value) {
+        return i;
+      }
+      current = current.next;
+    }
+    console.log(`${value} not found!`);
+    return -1;
+  }
+
+  traverse() {
+    let current = this.head;
+    for (let i = 0; i &lt; this.size; i++) {
+      console.log(current.value);
+      current = current.next;
+    }
+  }
+
+  reverse() {
+    let prev = null;
+    let current = this.head;
+    let next = null;
+
+    // move until the tail node is crossed
+    while (current != null) {
+      next = current.next; // find next node
+      current.next = prev; // shift pointer backward
+      prev = current; // move prev forward
+      current = next; // move current forward
+    }
+
+    this.head = prev; // last node becomes first
+  }
+}
+</pre>
+          </code>
+          <script>
+            document.addEventListener("DOMContentLoaded", () => {
+              const targetBlock = document.getElementById("linked_list");
+              if (targetBlock) {
+                const formatter = new JSCodeFormatter();
+                formatter.formatCodeBlock(targetBlock);
+              }
+            });
+          </script>
+        </section>
+      </ol>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Heaps</title>
+
+    <link rel="stylesheet" href="../assets/css/theme.css" />
+    <link rel="stylesheet" href="../assets/css/pages.css" />
+
+    <script src="../assets/js/copyCode.js"></script>
+    <script src="../assets/js/formatJScode.js"></script>
+  </head>
+  <body>
+    <main>
+      <h3>Heap</h3>
+      <p>
+        A heap is a complete binary tree that satisfies the heap property. In a
+        min-heap, every parent node is smaller than or equal to its children.
+        In a max-heap, every parent node is greater than or equal to its children.
+      </p>
+      <h3>Types of Heap</h3>
+      <ol>
+        <li>Static Heap</li>
+        <ul>
+          <li>
+            <a
+              href="../analysis/Heap/Array.md"
+              download="Array Based Heap - Analysis.md"
+              title="Download Analysis File"
+              >Array Based</a
+            >
+          </li>
+        </ul>
+        <section>
+          <code class="javascript">
+            <pre id="array">class MinHeap {
+  constructor(initialArray) {
+    this.items = [];
+    this.size = 0;
+
+    if (initialArray instanceof Array) {
+      for (let i = 0; i &lt; initialArray.length; i++) {
+        this.insert(initialArray[i]);
+      }
+    }
+  }
+
+  parentIndex(i) {
+    return Math.floor((i - 1) / 2);
+  }
+
+  leftChildIndex(i) {
+    return 2 * i + 1;
+  }
+
+  rightChildIndex(i) {
+    return 2 * i + 2;
+  }
+
+  swap(i, j) {
+    let temp = this.items[i];
+    this.items[i] = this.items[j];
+    this.items[j] = temp;
+  }
+
+  insert(value) {
+    // add value at the end
+    this.items[this.size] = value;
+    this.size++;
+    // bubble up to restore heap property
+    this.heapifyUp(this.size - 1);
+  }
+
+  heapifyUp(index) {
+    while (index &gt; 0) {
+      const parent = this.parentIndex(index);
+      if (this.items[parent] &gt; this.items[index]) {
+        // swap with parent if parent is larger
+        this.swap(parent, index);
+        index = parent;
+      } else {
+        break;
+      }
+    }
+  }
+
+  extractMin() {
+    if (this.isEmpty()) {
+      console.log("Heap is empty");
+      return null;
+    }
+
+    const min = this.items[0];
+    // move last element to root
+    this.items[0] = this.items[this.size - 1];
+    this.size--;
+    this.items.length = this.size;
+    // bubble down to restore heap property
+    this.heapifyDown(0);
+
+    return min;
+  }
+
+  heapifyDown(index) {
+    while (true) {
+      let smallest = index;
+      const left = this.leftChildIndex(index);
+      const right = this.rightChildIndex(index);
+
+      if (left &lt; this.size &amp;&amp; this.items[left] &lt; this.items[smallest]) {
+        smallest = left;
+      }
+      if (right &lt; this.size &amp;&amp; this.items[right] &lt; this.items[smallest]) {
+        smallest = right;
+      }
+
+      if (smallest !== index) {
+        this.swap(index, smallest);
+        index = smallest;
+      } else {
+        break;
+      }
+    }
+  }
+
+  peek() {
+    if (this.isEmpty()) {
+      console.log("Heap is empty");
+      return null;
+    }
+    return this.items[0];
+  }
+
+  isEmpty() {
+    return this.size === 0;
+  }
+
+  search(value) {
+    for (let i = 0; i &lt; this.size; i++) {
+      if (this.items[i] === value) {
+        return i;
+      }
+    }
+    console.log(value + " not found!");
+    return -1;
+  }
+
+  traverse() {
+    for (let i = 0; i &lt; this.size; i++) {
+      console.log(this.items[i]);
+    }
+  }
+}
+</pre>
+          </code>
+          <script>
+            document.addEventListener("DOMContentLoaded", () => {
+              const targetBlock = document.getElementById("array");
+              if (targetBlock) {
+                const formatter = new JSCodeFormatter();
+                formatter.formatCodeBlock(targetBlock);
+              }
+            });
+          </script>
+        </section>
+
+        <li>Dynamic Heap</li>
+        <ul>
+          <li>
+            <a
+              href="../analysis/Heap/LinkedList.md"
+              download="Linked Binary Tree Heap - Analysis.md"
+              title="Download Analysis File"
+              >Linked Binary Tree Based</a
+            >
+          </li>
+        </ul>
+
+        <section>
+          <code class="javascript">
+            <pre id="linked_list">class HeapNode {
+  constructor(value) {
+    this.value = value;
+    this.left = null;
+    this.right = null;
+    this.parent = null;
+  }
+}
+
+class MinHeap {
+  constructor(initialArray) {
+    this.root = null;
+    this.size = 0;
+
+    if (initialArray instanceof Array) {
+      for (let i = 0; i &lt; initialArray.length; i++) {
+        this.insert(initialArray[i]);
+      }
+    }
+  }
+
+  // navigate to node at given index using binary path
+  getNodeAt(index) {
+    if (index === 0) return this.root;
+
+    // convert index to binary, skip the leading 1 bit to get the path
+    const path = index.toString(2).slice(1);
+    let current = this.root;
+
+    for (const bit of path) {
+      current = bit === "0" ? current.left : current.right;
+    }
+
+    return current;
+  }
+
+  swap(a, b) {
+    let temp = a.value;
+    a.value = b.value;
+    b.value = temp;
+  }
+
+  insert(value) {
+    const newNode = new HeapNode(value);
+
+    if (this.root === null) {
+      this.root = newNode;
+      this.size++;
+      return;
+    }
+
+    // find the parent of the next available position
+    const parentIndex = Math.floor((this.size - 1) / 2);
+    const parent = this.getNodeAt(parentIndex);
+
+    newNode.parent = parent;
+
+    if (parent.left === null) {
+      parent.left = newNode;
+    } else {
+      parent.right = newNode;
+    }
+
+    this.size++;
+    // bubble up to restore heap property
+    this.heapifyUp(newNode);
+  }
+
+  heapifyUp(node) {
+    while (node.parent !== null &amp;&amp; node.parent.value &gt; node.value) {
+      // swap with parent if parent is larger
+      this.swap(node, node.parent);
+      node = node.parent;
+    }
+  }
+
+  extractMin() {
+    if (this.isEmpty()) {
+      console.log("Heap is empty");
+      return null;
+    }
+
+    const min = this.root.value;
+
+    if (this.size === 1) {
+      this.root = null;
+      this.size--;
+      return min;
+    }
+
+    // copy last node's value to root then detach the last node
+    const lastNode = this.getNodeAt(this.size - 1);
+    this.root.value = lastNode.value;
+
+    if (lastNode.parent.right === lastNode) {
+      lastNode.parent.right = null;
+    } else {
+      lastNode.parent.left = null;
+    }
+
+    this.size--;
+    // bubble down to restore heap property
+    this.heapifyDown(this.root);
+
+    return min;
+  }
+
+  heapifyDown(node) {
+    while (node.left !== null) {
+      let smallest = node.left;
+
+      if (node.right !== null &amp;&amp; node.right.value &lt; node.left.value) {
+        smallest = node.right;
+      }
+
+      if (node.value &gt; smallest.value) {
+        // swap with smallest child if node is larger
+        this.swap(node, smallest);
+        node = smallest;
+      } else {
+        break;
+      }
+    }
+  }
+
+  peek() {
+    if (this.isEmpty()) {
+      console.log("Heap is empty");
+      return null;
+    }
+    return this.root.value;
+  }
+
+  isEmpty() {
+    return this.root === null;
+  }
+
+  search(value) {
+    // BFS through all nodes
+    if (this.isEmpty()) {
+      console.log(value + " not found!");
+      return -1;
+    }
+
+    const queue = [this.root];
+    let index = 0;
+
+    while (queue.length &gt; 0) {
+      const current = queue.shift();
+
+      if (current.value === value) {
+        return index;
+      }
+
+      if (current.left) queue.push(current.left);
+      if (current.right) queue.push(current.right);
+
+      index++;
+    }
+
+    console.log(value + " not found!");
+    return -1;
+  }
+
+  traverse() {
+    // level-order traversal
+    if (this.isEmpty()) return;
+
+    const queue = [this.root];
+
+    while (queue.length &gt; 0) {
+      const current = queue.shift();
+      console.log(current.value);
+
+      if (current.left) queue.push(current.left);
+      if (current.right) queue.push(current.right);
+    }
+  }
+}
+</pre>
+          </code>
+          <script>
+            document.addEventListener("DOMContentLoaded", () => {
+              const targetBlock = document.getElementById("linked_list");
+              if (targetBlock) {
+                const formatter = new JSCodeFormatter();
+                formatter.formatCodeBlock(targetBlock);
+              }
+            });
+          </script>
+        </section>
+      </ol>
+    </main>
+  </body>
+</html>

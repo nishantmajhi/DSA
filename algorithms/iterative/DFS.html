@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Depth First Search</title>
+
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
+    <link rel="stylesheet" href="../../assets/css/pages.css" />
+
+    <script src="../../assets/js/copyCode.js"></script>
+    <script src="../../assets/js/formatJScode.js"></script>
+  </head>
+  <body>
+    <main>
+      <h3>Depth First Search</h3>
+      <p>Depth-first search explores a graph as far as possible along each branch using a stack before backtracking. Time complexity: O(V + E).</p>
+      <section>
+        <code class="javascript">
+          <pre id="dfs">
+          </pre>
+        </code>
+        <script>
+          document.addEventListener("DOMContentLoaded", () => {
+            const jsCode = `// graph is represented as an adjacency list
+// e.g. graph = [[1, 2], [0, 3], [0, 3], [1, 2]]
+function DFS(graph, start) {
+  const visited = new Array(graph.length).fill(false);
+  const stack = [start];
+  const result = [];
+
+  while (stack.length > 0) {
+    const vertex = stack.pop();
+
+    if (!visited[vertex]) {
+      visited[vertex] = true;
+      result.push(vertex);
+
+      // push neighbours in reverse so lower-indexed ones are explored first
+      for (let i = graph[vertex].length - 1; i >= 0; i--) {
+        if (!visited[graph[vertex][i]]) {
+          stack.push(graph[vertex][i]);
+        }
+      }
+    }
+  }
+
+  return result;
+}`;
+            const block = document.getElementById("dfs");
+            if (block) {
+              block.textContent = jsCode;
+              const formatter = new JSCodeFormatter();
+              formatter.formatCodeBlock(block);
+            }
+          });
+        </script>
+      </section>
+    </main>
+  </body>
+</html>

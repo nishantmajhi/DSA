@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Heap Sort</title>
+
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
+    <link rel="stylesheet" href="../../assets/css/pages.css" />
+
+    <script src="../../assets/js/copyCode.js"></script>
+    <script src="../../assets/js/formatJScode.js"></script>
+  </head>
+  <body>
+    <main>
+      <h3>Heap Sort</h3>
+      <p>Heap sort builds a max-heap from the array, then repeatedly extracts the maximum element to produce a sorted array. Time complexity: O(n log n).</p>
+      <section>
+        <code class="javascript">
+          <pre id="heap_sort">
+          </pre>
+        </code>
+        <script>
+          document.addEventListener("DOMContentLoaded", () => {
+            const jsCode = `function heapSort(arr) {
+  const n = arr.length;
+
+  // build a max-heap from the array
+  for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+    heapify(arr, n, i);
+  }
+
+  // extract elements from the heap one by one
+  for (let i = n - 1; i > 0; i--) {
+    // move current root (maximum) to the end
+    let temp = arr[0];
+    arr[0] = arr[i];
+    arr[i] = temp;
+
+    // heapify the reduced heap
+    heapify(arr, i, 0);
+  }
+
+  return arr;
+}
+
+function heapify(arr, n, i) {
+  let largest = i;
+  const left = 2 * i + 1;
+  const right = 2 * i + 2;
+
+  if (left < n && arr[left] > arr[largest]) {
+    largest = left;
+  }
+  if (right < n && arr[right] > arr[largest]) {
+    largest = right;
+  }
+
+  if (largest !== i) {
+    let temp = arr[i];
+    arr[i] = arr[largest];
+    arr[largest] = temp;
+
+    // recursively heapify the affected subtree
+    heapify(arr, n, largest);
+  }
+}`;
+            const block = document.getElementById("heap_sort");
+            if (block) {
+              block.textContent = jsCode;
+              const formatter = new JSCodeFormatter();
+              formatter.formatCodeBlock(block);
+            }
+          });
+        </script>
+      </section>
+    </main>
+  </body>
+</html>

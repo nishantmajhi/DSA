@@ -1,0 +1,100 @@
+:root {
+  /* Coconut palette, sampled from the Noto Color Emoji coconut (U+1F965) */
+  --link-color: #d99a5b; /* caramel husk fiber */
+  --link-hover: #f0c896; /* toasted flesh highlight */
+  --link-visited: #b5876a; /* dusty terracotta - muted, distinct from unvisited */
+  --foreground-color: #f2ece4; /* coconut flesh white */
+  --background-color: #2e1a10; /* dark husk brown */
+  --surface-color: #3d2415; /* panel / header brown */
+  --surface-hover: #5a331e; /* lighter husk brown */
+  --border-color: #a9968e; /* husk fiber grey-brown */
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  color: var(--foreground-color);
+  background-color: var(--background-color);
+  font-family: system-ui, sans-serif;
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--link-color) 55%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition:
+    color 0.3s,
+    text-decoration-color 0.3s,
+    text-decoration-thickness 0.15s;
+}
+a:visited {
+  color: var(--link-visited);
+  text-decoration-color: color-mix(in srgb, var(--link-visited) 55%, transparent);
+}
+a:hover,
+a:focus-visible {
+  color: var(--link-hover);
+  text-decoration-color: var(--link-hover);
+  text-decoration-thickness: 2px;
+}
+a:active {
+  color: var(--foreground-color);
+  text-decoration-color: var(--foreground-color);
+}
+
+button {
+  border: transparent;
+  cursor: pointer;
+  text-align: center;
+  color: var(--foreground-color);
+  background-color: var(--surface-color);
+  transition: background-color 0.4s;
+}
+
+button:hover,
+button:focus {
+  background-color: var(--surface-hover);
+}
+
+/* Custom scrollbar, matching the coconut theme */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--surface-hover) var(--background-color);
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background-color: var(--background-color);
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--surface-hover);
+  border-radius: 8px;
+  border: 3px solid var(--background-color);
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--link-color);
+}
+::-webkit-scrollbar-corner {
+  background-color: var(--background-color);
+}
+
+/* Respect the user's reduced-motion preference, including inline-style
+   transitions set by script.js and copyCode.js */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}

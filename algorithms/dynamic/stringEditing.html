@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>String Editing</title>
+
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
+    <link rel="stylesheet" href="../../assets/css/pages.css" />
+
+    <script src="../../assets/js/copyCode.js"></script>
+    <script src="../../assets/js/formatJScode.js"></script>
+  </head>
+  <body>
+    <main>
+      <h3>String Editing</h3>
+      <p>Edit distance (Levenshtein distance) finds the minimum number of single-character insertions, deletions, or substitutions needed to transform one string into another. Time complexity: O(m × n).</p>
+      <section>
+        <code class="javascript">
+          <pre id="string_editing">
+          </pre>
+        </code>
+        <script>
+          document.addEventListener("DOMContentLoaded", () => {
+            const jsCode = `// returns the minimum number of insertions, deletions, or substitutions
+// needed to transform string s into string t
+function editDistance(s, t) {
+  const m = s.length;
+  const n = t.length;
+
+  // dp[i][j] = edit distance between s[0..i-1] and t[0..j-1]
+  const dp = Array.from({ length: m + 1 }, () =>
+    new Array(n + 1).fill(0)
+  );
+
+  // base case: converting from/to an empty string
+  for (let i = 0; i <= m; i++) dp[i][0] = i;
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      if (s[i - 1] === t[j - 1]) {
+        // characters match — no operation needed
+        dp[i][j] = dp[i - 1][j - 1];
+      } else {
+        dp[i][j] = 1 + Math.min(
+          dp[i - 1][j],      // delete from s
+          dp[i][j - 1],      // insert into s
+          dp[i - 1][j - 1]   // replace in s
+        );
+      }
+    }
+  }
+
+  return dp[m][n];
+}`;
+            const block = document.getElementById("string_editing");
+            if (block) {
+              block.textContent = jsCode;
+              const formatter = new JSCodeFormatter();
+              formatter.formatCodeBlock(block);
+            }
+          });
+        </script>
+      </section>
+    </main>
+  </body>
+</html>

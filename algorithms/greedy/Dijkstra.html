@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dijkstra's Algorithm</title>
+
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
+    <link rel="stylesheet" href="../../assets/css/pages.css" />
+
+    <script src="../../assets/js/copyCode.js"></script>
+    <script src="../../assets/js/formatJScode.js"></script>
+  </head>
+  <body>
+    <main>
+      <h3>Dijkstra's Algorithm</h3>
+      <p>Dijkstra's algorithm finds the shortest path from a source vertex to all others in a weighted graph with non-negative edge weights. Time complexity: O(V²) with an adjacency matrix.</p>
+      <section>
+        <code class="javascript">
+          <pre id="dijkstra">
+          </pre>
+        </code>
+        <script>
+          document.addEventListener("DOMContentLoaded", () => {
+            const jsCode = `// graph is an adjacency matrix where graph[u][v] is the edge weight (0 = no edge)
+function dijkstra(graph, start) {
+  const n = graph.length;
+  const dist = new Array(n).fill(Infinity);
+  const visited = new Array(n).fill(false);
+
+  dist[start] = 0;
+
+  for (let i = 0; i < n - 1; i++) {
+    // pick the unvisited vertex with the smallest distance
+    const u = minDistance(dist, visited);
+    visited[u] = true;
+
+    // update distances for all neighbours of u
+    for (let v = 0; v < n; v++) {
+      if (!visited[v] && graph[u][v] !== 0 && dist[u] + graph[u][v] < dist[v]) {
+        dist[v] = dist[u] + graph[u][v];
+      }
+    }
+  }
+
+  return dist;
+}
+
+function minDistance(dist, visited) {
+  let min = Infinity;
+  let minIndex = -1;
+
+  for (let v = 0; v < dist.length; v++) {
+    if (!visited[v] && dist[v] <= min) {
+      min = dist[v];
+      minIndex = v;
+    }
+  }
+
+  return minIndex;
+}`;
+            const block = document.getElementById("dijkstra");
+            if (block) {
+              block.textContent = jsCode;
+              const formatter = new JSCodeFormatter();
+              formatter.formatCodeBlock(block);
+            }
+          });
+        </script>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Queues</title>
+
+    <link rel="stylesheet" href="../assets/css/theme.css" />
+    <link rel="stylesheet" href="../assets/css/pages.css" />
+
+    <script src="../assets/js/copyCode.js"></script>
+    <script src="../assets/js/formatJScode.js"></script>
+  </head>
+  <body>
+    <main>
+      <h3>Queue</h3>
+      <p>
+        A queue is a linear data structure that follows the FIFO (First In,
+        First Out) principle.
+      </p>
+      <h3>Types of Queue</h3>
+      <ol>
+        <li>Static Queue</li>
+        <ul>
+          <li>
+            <a
+              href="../analysis/Queue/Array.md"
+              download="Array Based Queue - Analysis.md"
+              title="Download Analysis File"
+              >Array Based</a
+            >
+          </li>
+        </ul>
+        <section>
+          <code class="javascript">
+            <pre id="array">class Queue {
+  constructor(initialArray, maxSize = 100) {
+    this.items = [];
+    this.front = -1;
+    this.rear = -1;
+    this.maxSize = maxSize;
+
+    if (initialArray instanceof Array) {
+      if (initialArray.length &gt; maxSize) {
+        console.log("Initial array exceeds maximum queue size");
+        return;
+      }
+      for (let i = 0; i &lt; initialArray.length; i++) {
+        this.enqueue(initialArray[i]);
+      }
+    }
+  }
+
+  enqueue(value) {
+    if (this.isFull()) {
+      console.log("Queue overflow");
+      return;
+    }
+
+    if (this.isEmpty()) {
+      this.front = 0;
+      this.rear = 0;
+    } else {
+      this.rear++;
+    }
+
+    this.items[this.rear] = value;
+  }
+
+  dequeue() {
+    if (this.isEmpty()) {
+      console.log("Queue underflow");
+      return null;
+    }
+
+    const dequeuedValue = this.items[this.front];
+
+    // if only one element was present
+    if (this.front === this.rear) {
+      this.front = -1;
+      this.rear = -1;
+    } else {
+      this.front++;
+    }
+
+    return dequeuedValue;
+  }
+
+  peek() {
+    if (this.isEmpty()) {
+      console.log("Queue is empty");
+      return null;
+    }
+
+    return this.items[this.front];
+  }
+
+  isEmpty() {
+    return this.front === -1;
+  }
+
+  isFull() {
+    return this.rear === this.maxSize - 1;
+  }
+
+  size() {
+    if (this.isEmpty()) {
+      return 0;
+    }
+    return this.rear - this.front + 1;
+  }
+
+  search(value) {
+    if (this.isEmpty()) {
+      console.log(`${value} not found!`);
+      return -1;
+    }
+
+    // search from front to rear
+    for (let i = this.front; i &lt;= this.rear; i++) {
+      if (this.items[i] === value) {
+        // return position from front (0-based)
+        return i - this.front;
+      }
+    }
+
+    console.log(`${value} not found!`);
+    return -1;
+  }
+
+  traverse() {
+    if (this.isEmpty()) {
+      console.log("Queue is empty");
+      return;
+    }
+
+    // traverse from front to rear
+    for (let i = this.front; i &lt;= this.rear; i++) {
+      console.log(this.items[i]);
+    }
+  }
+}
+</pre>
+          </code>
+          <script>
+            document.addEventListener("DOMContentLoaded", () => {
+              const targetBlock = document.getElementById("array");
+              if (targetBlock) {
+                const formatter = new JSCodeFormatter();
+                formatter.formatCodeBlock(targetBlock);
+              }
+            });
+          </script>
+        </section>
+
+        <li>Dynamic Queue</li>
+        <ul>
+          <li>
+            <a
+              href="../analysis/Queue/LinkedList.md"
+              download="Linked List Based Queue - Analysis.md"
+              title="Download Analysis File"
+              >Linked Queue Based</a
+            >
+          </li>
+        </ul>
+
+        <section>
+          <code class="javascript">
+            <pre id="linked_list">class Node {
+  constructor(value) {
+    this.value = value;
+    this.next = null;
+  }
+}
+
+class Queue {
+  constructor(initialArray) {
+    this.front = null;
+    this.rear = null;
+    this.size = 0;
+
+    if (initialArray instanceof Array) {
+      for (let i = 0; i &lt; initialArray.length; i++) {
+        this.enqueue(initialArray[i]);
+      }
+    }
+  }
+
+  enqueue(value) {
+    const newNode = new Node(value);
+
+    if (this.isEmpty()) {
+      // if queue is empty, both front and rear point to new node
+      this.front = newNode;
+      this.rear = newNode;
+    } else {
+      // add new node at the rear
+      this.rear.next = newNode;
+      this.rear = newNode;
+    }
+
+    this.size++;
+  }
+
+  dequeue() {
+    if (this.isEmpty()) {
+      console.log("Queue underflow");
+      return null;
+    }
+
+    const dequeuedValue = this.front.value;
+
+    // move front pointer to the next node
+    this.front = this.front.next;
+
+    // if queue becomes empty after dequeue
+    if (this.front === null) {
+      this.rear = null;
+    }
+
+    this.size--;
+    return dequeuedValue;
+  }
+
+  peek() {
+    if (this.isEmpty()) {
+      console.log("Queue is empty");
+      return null;
+    }
+
+    return this.front.value;
+  }
+
+  isEmpty() {
+    return this.front === null;
+  }
+
+  isFull() {
+    // For linked list implementation, queue is never full (until memory runs out)
+    return false;
+  }
+
+  getSize() {
+    return this.size;
+  }
+
+  search(value) {
+    if (this.isEmpty()) {
+      console.log(`${value} not found!`);
+      return -1;
+    }
+
+    let current = this.front;
+    let position = 0;
+
+    while (current !== null) {
+      if (current.value === value) {
+        return position;
+      }
+      current = current.next;
+      position++;
+    }
+
+    console.log(`${value} not found!`);
+    return -1;
+  }
+
+  traverse() {
+    if (this.isEmpty()) {
+      console.log("Queue is empty");
+      return;
+    }
+
+    let current = this.front;
+
+    while (current !== null) {
+      console.log(current.value);
+      current = current.next;
+    }
+  }
+}
+</pre>
+          </code>
+          <script>
+            document.addEventListener("DOMContentLoaded", () => {
+              const targetBlock = document.getElementById("linked_list");
+              if (targetBlock) {
+                const formatter = new JSCodeFormatter();
+                formatter.formatCodeBlock(targetBlock);
+              }
+            });
+          </script>
+        </section>
+      </ol>
+    </main>
+  </body>
+</html>

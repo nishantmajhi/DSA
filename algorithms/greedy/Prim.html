@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prim's Algorithm</title>
+
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
+    <link rel="stylesheet" href="../../assets/css/pages.css" />
+
+    <script src="../../assets/js/copyCode.js"></script>
+    <script src="../../assets/js/formatJScode.js"></script>
+  </head>
+  <body>
+    <main>
+      <h3>Prim's Algorithm</h3>
+      <p>Prim’s algorithm builds a minimum spanning tree by greedily adding the cheapest edge that connects the growing MST to a new vertex. Time complexity: O(V²) with an adjacency matrix.</p>
+      <section>
+        <code class="javascript">
+          <pre id="prim">
+          </pre>
+        </code>
+        <script>
+          document.addEventListener("DOMContentLoaded", () => {
+            const jsCode = `// graph is an adjacency matrix where graph[u][v] is the edge weight (0 = no edge)
+function prim(graph) {
+  const n = graph.length;
+  const key = new Array(n).fill(Infinity);
+  const inMST = new Array(n).fill(false);
+  const parent = new Array(n).fill(-1);
+
+  // start from vertex 0
+  key[0] = 0;
+
+  for (let i = 0; i < n - 1; i++) {
+    // pick the vertex with the minimum key not yet in the MST
+    const u = minKey(key, inMST);
+    inMST[u] = true;
+
+    // update keys of adjacent vertices
+    for (let v = 0; v < n; v++) {
+      if (graph[u][v] !== 0 && !inMST[v] && graph[u][v] < key[v]) {
+        key[v] = graph[u][v];
+        parent[v] = u;
+      }
+    }
+  }
+
+  return parent;
+}
+
+function minKey(key, inMST) {
+  let min = Infinity;
+  let minIndex = -1;
+
+  for (let v = 0; v < key.length; v++) {
+    if (!inMST[v] && key[v] < min) {
+      min = key[v];
+      minIndex = v;
+    }
+  }
+
+  return minIndex;
+}`;
+            const block = document.getElementById("prim");
+            if (block) {
+              block.textContent = jsCode;
+              const formatter = new JSCodeFormatter();
+              formatter.formatCodeBlock(block);
+            }
+          });
+        </script>
+      </section>
+    </main>
+  </body>
+</html>

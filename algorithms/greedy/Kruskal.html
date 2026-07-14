@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kruskal's Algorithm</title>
+
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
+    <link rel="stylesheet" href="../../assets/css/pages.css" />
+
+    <script src="../../assets/js/copyCode.js"></script>
+    <script src="../../assets/js/formatJScode.js"></script>
+  </head>
+  <body>
+    <main>
+      <h3>Kruskal's Algorithm</h3>
+      <p>Kruskal's algorithm builds a minimum spanning tree by greedily adding the cheapest edge that doesn’t form a cycle, using a union-find structure. Time complexity: O(E log E).</p>
+      <section>
+        <code class="javascript">
+          <pre id="kruskal">
+          </pre>
+        </code>
+        <script>
+          document.addEventListener("DOMContentLoaded", () => {
+            const jsCode = `// edges is an array of { u, v, weight } objects
+function kruskal(vertices, edges) {
+  // sort edges by weight in ascending order
+  edges.sort((a, b) => a.weight - b.weight);
+
+  const parent = [];
+  const rank = [];
+
+  // initialise disjoint sets
+  for (let i = 0; i < vertices; i++) {
+    parent[i] = i;
+    rank[i] = 0;
+  }
+
+  const mst = [];
+
+  for (const edge of edges) {
+    const rootU = find(parent, edge.u);
+    const rootV = find(parent, edge.v);
+
+    // add edge only if it does not form a cycle
+    if (rootU !== rootV) {
+      mst.push(edge);
+      union(parent, rank, rootU, rootV);
+    }
+
+    // stop once we have V - 1 edges
+    if (mst.length === vertices - 1) break;
+  }
+
+  return mst;
+}
+
+function find(parent, i) {
+  // path compression
+  if (parent[i] !== i) {
+    parent[i] = find(parent, parent[i]);
+  }
+  return parent[i];
+}
+
+function union(parent, rank, x, y) {
+  // union by rank
+  if (rank[x] < rank[y]) {
+    parent[x] = y;
+  } else if (rank[x] > rank[y]) {
+    parent[y] = x;
+  } else {
+    parent[y] = x;
+    rank[x]++;
+  }
+}`;
+            const block = document.getElementById("kruskal");
+            if (block) {
+              block.textContent = jsCode;
+              const formatter = new JSCodeFormatter();
+              formatter.formatCodeBlock(block);
+            }
+          });
+        </script>
+      </section>
+    </main>
+  </body>
+</html>
