@@ -1,0 +1,100 @@
+header {
+  background-color: var(--surface-color);
+}
+header * {
+  color: var(--foreground-color);
+}
+header ul {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  align-items: center;
+  grid-template-columns: max-content repeat(5, 1fr);
+  list-style-type: none;
+  height: 3rem;
+}
+header li {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
+}
+header a {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-decoration: none;
+  color: var(--foreground-color);
+}
+header a:visited {
+  color: var(--foreground-color);
+}
+header a:hover,
+header a:focus-visible {
+  color: var(--foreground-color);
+}
+header a:focus-visible {
+  outline: 2px solid var(--link-color);
+  outline-offset: -2px;
+}
+header li:hover,
+header li:active {
+  background-color: var(--background-color);
+}
+header img {
+  padding-inline: 1rem;
+  height: 2rem;
+}
+header h3 {
+  margin: 0;
+}
+
+main iframe {
+  border: none;
+  --padding-value: 1rem;
+  padding: var(--padding-value);
+  width: calc(100dvw - 2 * var(--padding-value));
+}
+
+footer {
+  border-top: 2px dotted var(--border-color);
+  position: absolute;
+  bottom: 0;
+  display: inline-block;
+  width: 100dvw;
+}
+footer summary {
+  border-bottom: 1px solid var(--surface-color);
+  padding: 0.5rem;
+  cursor: pointer;
+  text-align: center;
+  font-size: 1.125rem;
+}
+footer nav {
+  display: grid;
+  width: 100dvw;
+  grid-template-columns: repeat(4, 1fr);
+}
+footer section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+footer section:not(:last-child) {
+  border-right: 1px solid var(--surface-color);
+}
+footer h4 {
+  margin: 1rem 0 0 0;
+  border: 0;
+  padding: 0;
+  font-size: 1rem;
+}
+footer ul {
+  margin: 0;
+  border: 0;
+  padding: 0.5rem 0 0 0;
+  font-size: 1rem;
+}

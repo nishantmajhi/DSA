@@ -1,0 +1,8 @@
+# GitHub Pages builds this repository with Jekyll, which publishes every
+# Markdown file it finds. The analysis/*.md files are meant to be published --
+# the pages link to them as downloads -- but these are not.
+exclude:
+  - README.md
+  - review.md
+  - package.json
+  - tests

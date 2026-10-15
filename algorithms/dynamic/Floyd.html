@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Floyd's Algorithm</title>
+
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
+    <link rel="stylesheet" href="../../assets/css/pages.css" />
+
+    <script src="../../assets/js/copyCode.js"></script>
+    <script src="../../assets/js/formatJScode.js"></script>
+  </head>
+  <body>
+    <main>
+      <h3>Floyd's Algorithm</h3>
+      <p>Floyd-Warshall finds the shortest paths between all pairs of vertices in a weighted graph. It handles negative edges but not negative cycles. Time complexity: O(V³).</p>
+      <section>
+        <code class="javascript">
+          <pre id="floyd">
+          </pre>
+        </code>
+        <script>
+          document.addEventListener("DOMContentLoaded", () => {
+            const jsCode = `// graph is a V x V adjacency matrix (0 = no edge between distinct vertices)
+function floyd(graph) {
+  const n = graph.length;
+
+  // copy graph into distance matrix
+  const dist = graph.map((row) => [...row]);
+
+  // replace 0 (no edge) with Infinity for non-diagonal entries
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      if (i !== j && dist[i][j] === 0) {
+        dist[i][j] = Infinity;
+      }
+    }
+  }
+
+  // try every vertex k as an intermediate point
+  for (let k = 0; k < n; k++) {
+    for (let i = 0; i < n; i++) {
+      for (let j = 0; j < n; j++) {
+        if (dist[i][k] + dist[k][j] < dist[i][j]) {
+          dist[i][j] = dist[i][k] + dist[k][j];
+        }
+      }
+    }
+  }
+
+  return dist;
+}`;
+            const block = document.getElementById("floyd");
+            if (block) {
+              block.textContent = jsCode;
+              const formatter = new JSCodeFormatter();
+              formatter.formatCodeBlock(block);
+            }
+          });
+        </script>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stacks</title>
+
+    <link rel="stylesheet" href="../assets/css/theme.css" />
+    <link rel="stylesheet" href="../assets/css/pages.css" />
+
+    <script src="../assets/js/copyCode.js"></script>
+    <script src="../assets/js/formatJScode.js"></script>
+  </head>
+  <body>
+    <main>
+      <h3>Stack</h3>
+      <p>
+        A stack is a linear data structure that follows the LIFO (Last In, First
+        Out) principle.
+      </p>
+      <h3>Types of Stack</h3>
+      <ol>
+        <li>Static Stack</li>
+        <ul>
+          <li>
+            <a
+              href="../analysis/Stack/Array.md"
+              download="Array Based Stack - Analysis.md"
+              title="Download Analysis File"
+              >Array Based</a
+            >
+          </li>
+        </ul>
+        <section>
+          <code class="javascript">
+            <pre id="array">class Stack {
+  constructor(initialArray, maxSize = 100) {
+    this.items = [];
+    this.top = -1;
+    this.maxSize = maxSize;
+
+    if (initialArray instanceof Array) {
+      if (initialArray.length &gt; maxSize) {
+        console.log("Initial array exceeds maximum stack size");
+        return;
+      }
+      for (let i = 0; i &lt; initialArray.length; i++) {
+        this.push(initialArray[i]);
+      }
+    }
+  }
+
+  push(value) {
+    if (this.isFull()) {
+      console.log("Stack overflow");
+      return;
+    }
+
+    // increment top index and insert element
+    this.top++;
+    this.items[this.top] = value;
+  }
+
+  pop() {
+    if (this.isEmpty()) {
+      console.log("Stack underflow");
+      return null;
+    }
+
+    const poppedValue = this.items[this.top];
+    // decrement top index to remove element
+    this.top--;
+
+    return poppedValue;
+  }
+
+  peek() {
+    if (this.isEmpty()) {
+      console.log("Stack is empty");
+      return null;
+    }
+
+    return this.items[this.top];
+  }
+
+  isEmpty() {
+    return this.top === -1;
+  }
+
+  isFull() {
+    return this.top === this.maxSize - 1;
+  }
+
+  size() {
+    return this.top + 1;
+  }
+
+  search(value) {
+    // search from top to bottom
+    for (let i = this.top; i &gt;= 0; i--) {
+      if (this.items[i] === value) {
+        // return position from top (0-based)
+        return this.top - i;
+      }
+    }
+
+    console.log(`${value} not found!`);
+    return -1;
+  }
+
+  traverse() {
+    // traverse from top to bottom
+    for (let i = this.top; i &gt;= 0; i--) {
+      console.log(this.items[i]);
+    }
+  }
+}
+</pre>
+          </code>
+          <script>
+            document.addEventListener("DOMContentLoaded", () => {
+              const targetBlock = document.getElementById("array");
+              if (targetBlock) {
+                const formatter = new JSCodeFormatter();
+                formatter.formatCodeBlock(targetBlock);
+              }
+            });
+          </script>
+        </section>
+
+        <li>Dynamic Stack</li>
+        <ul>
+          <li>
+            <a
+              href="../analysis/Stack/LinkedList.md"
+              download="Linked List Based Stack - Analysis.md"
+              title="Download Analysis File"
+              >Linked Stack Based</a
+            >
+          </li>
+        </ul>
+
+        <section>
+          <code class="javascript">
+            <pre id="linked_list">class Node {
+  constructor(value) {
+    this.value = value;
+    this.next = null;
+  }
+}
+
+class Stack {
+  constructor(initialArray) {
+    this.top = null;
+    this.size = 0;
+
+    if (initialArray instanceof Array) {
+      for (let i = 0; i &lt; initialArray.length; i++) {
+        this.push(initialArray[i]);
+      }
+    }
+  }
+
+  push(value) {
+    const newNode = new Node(value);
+
+    // point new node to current top
+    newNode.next = this.top;
+    // make new node the new top
+    this.top = newNode;
+    this.size++;
+  }
+
+  pop() {
+    if (this.isEmpty()) {
+      console.log("Stack underflow");
+      return null;
+    }
+
+    const poppedValue = this.top.value;
+    // move top pointer to the next node
+    this.top = this.top.next;
+    this.size--;
+
+    return poppedValue;
+  }
+
+  peek() {
+    if (this.isEmpty()) {
+      console.log("Stack is empty");
+      return null;
+    }
+
+    return this.top.value;
+  }
+
+  isEmpty() {
+    return this.top === null;
+  }
+
+  isFull() {
+    // For linked list implementation, stack is never full (until memory runs out)
+    return false;
+  }
+
+  search(value) {
+    let current = this.top;
+    let position = 0;
+
+    while (current !== null) {
+      if (current.value === value) {
+        return position;
+      }
+      current = current.next;
+      position++;
+    }
+
+    console.log(`${value} not found!`);
+    return -1;
+  }
+
+  traverse() {
+    let current = this.top;
+    
+    while (current !== null) {
+      console.log(current.value);
+      current = current.next;
+    }
+  }
+}</pre>
+          </code>
+          <script>
+            document.addEventListener("DOMContentLoaded", () => {
+              const targetBlock = document.getElementById("linked_list");
+              if (targetBlock) {
+                const formatter = new JSCodeFormatter();
+                formatter.formatCodeBlock(targetBlock);
+              }
+            });
+          </script>
+        </section>
+      </ol>
+    </main>
+  </body>
+</html>

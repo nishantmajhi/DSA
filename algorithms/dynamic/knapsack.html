@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>0/1 Knapsack</title>
+
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
+    <link rel="stylesheet" href="../../assets/css/pages.css" />
+
+    <script src="../../assets/js/copyCode.js"></script>
+    <script src="../../assets/js/formatJScode.js"></script>
+  </head>
+  <body>
+    <main>
+      <h3>0/1 Knapsack</h3>
+      <p>The 0/1 knapsack problem finds the maximum value of items that fit within a weight capacity, where each item can be taken at most once. Time complexity: O(n × W).</p>
+      <section>
+        <code class="javascript">
+          <pre id="knapsack">
+          </pre>
+        </code>
+        <script>
+          document.addEventListener("DOMContentLoaded", () => {
+            const jsCode = `// weights and values are arrays of equal length, capacity is the max weight
+function knapsack(weights, values, capacity) {
+  const n = weights.length;
+
+  // dp[i][w] = max value using first i items with capacity w
+  const dp = Array.from({ length: n + 1 }, () =>
+    new Array(capacity + 1).fill(0)
+  );
+
+  for (let i = 1; i <= n; i++) {
+    for (let w = 0; w <= capacity; w++) {
+      if (weights[i - 1] > w) {
+        // item i is too heavy for current capacity — skip it
+        dp[i][w] = dp[i - 1][w];
+      } else {
+        // take the better of including or excluding item i
+        dp[i][w] = Math.max(
+          dp[i - 1][w],
+          dp[i - 1][w - weights[i - 1]] + values[i - 1]
+        );
+      }
+    }
+  }
+
+  return dp[n][capacity];
+}`;
+            const block = document.getElementById("knapsack");
+            if (block) {
+              block.textContent = jsCode;
+              const formatter = new JSCodeFormatter();
+              formatter.formatCodeBlock(block);
+            }
+          });
+        </script>
+      </section>
+    </main>
+  </body>
+</html>

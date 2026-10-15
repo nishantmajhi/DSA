@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Graphs</title>
+
+    <link rel="stylesheet" href="../assets/css/theme.css" />
+    <link rel="stylesheet" href="../assets/css/pages.css" />
+
+    <script src="../assets/js/copyCode.js"></script>
+    <script src="../assets/js/formatJScode.js"></script>
+  </head>
+  <body>
+    <main>
+      <h3>Graph</h3>
+      <p>
+        A graph is a non-linear data structure consisting of vertices (nodes)
+        and edges that connect pairs of vertices. Graphs can be directed or
+        undirected, and weighted or unweighted.
+      </p>
+      <h3>Representations</h3>
+      <ol>
+        <li>Adjacency Matrix</li>
+        <ul>
+          <li>
+            Uses a 2D array where <code>matrix[i][j]</code> holds the edge
+            weight from vertex <em>i</em> to vertex <em>j</em>
+          </li>
+          <li>Space: O(V²) — suitable for dense graphs</li>
+          <li>Edge lookup: O(1)</li>
+        </ul>
+        <section>
+          <code class="javascript">
+            <pre id="adj_matrix"></pre>
+          </code>
+          <script>
+            document.addEventListener("DOMContentLoaded", () => {
+              const jsCode = `class Graph {
+  constructor(vertices) {
+    this.vertices = vertices;
+    // initialise all edges to 0 (no edge)
+    this.matrix = Array.from({ length: vertices }, () =>
+      new Array(vertices).fill(0)
+    );
+  }
+
+  addEdge(u, v, weight = 1) {
+    this.matrix[u][v] = weight;
+    // comment out the line below for directed graphs
+    this.matrix[v][u] = weight;
+  }
+
+  removeEdge(u, v) {
+    this.matrix[u][v] = 0;
+    this.matrix[v][u] = 0;
+  }
+
+  hasEdge(u, v) {
+    return this.matrix[u][v] !== 0;
+  }
+
+  getNeighbors(v) {
+    const neighbors = [];
+    for (let i = 0; i < this.vertices; i++) {
+      if (this.matrix[v][i] !== 0) {
+        neighbors.push(i);
+      }
+    }
+    return neighbors;
+  }
+
+  printGraph() {
+    for (let i = 0; i < this.vertices; i++) {
+      console.log(i + ": " + this.matrix[i].join(" "));
+    }
+  }
+}`;
+              const block = document.getElementById("adj_matrix");
+              if (block) {
+                block.textContent = jsCode;
+                const formatter = new JSCodeFormatter();
+                formatter.formatCodeBlock(block);
+              }
+            });
+          </script>
+        </section>
+
+        <li>Adjacency List</li>
+        <ul>
+          <li>
+            Uses an array of lists where each list holds the neighbours of a
+            vertex
+          </li>
+          <li>Space: O(V + E) — suitable for sparse graphs</li>
+          <li>Edge lookup: O(degree of vertex)</li>
+        </ul>
+        <section>
+          <code class="javascript">
+            <pre id="adj_list"></pre>
+          </code>
+          <script>
+            document.addEventListener("DOMContentLoaded", () => {
+              const jsCode = `class Graph {
+  constructor(vertices) {
+    this.vertices = vertices;
+    // initialise empty adjacency list for each vertex
+    this.list = Array.from({ length: vertices }, () => []);
+  }
+
+  addEdge(u, v, weight = 1) {
+    this.list[u].push({ node: v, weight });
+    // comment out the line below for directed graphs
+    this.list[v].push({ node: u, weight });
+  }
+
+  removeEdge(u, v) {
+    this.list[u] = this.list[u].filter((edge) => edge.node !== v);
+    this.list[v] = this.list[v].filter((edge) => edge.node !== u);
+  }
+
+  hasEdge(u, v) {
+    return this.list[u].some((edge) => edge.node === v);
+  }
+
+  getNeighbors(v) {
+    return this.list[v].map((edge) => edge.node);
+  }
+
+  printGraph() {
+    for (let i = 0; i < this.vertices; i++) {
+      const edges = this.list[i]
+        .map((e) => e.node + "(" + e.weight + ")")
+        .join(" -> ");
+      console.log(i + ": " + edges);
+    }
+  }
+}`;
+              const block = document.getElementById("adj_list");
+              if (block) {
+                block.textContent = jsCode;
+                const formatter = new JSCodeFormatter();
+                formatter.formatCodeBlock(block);
+              }
+            });
+          </script>
+        </section>
+      </ol>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Breadth First Search</title>
+
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
+    <link rel="stylesheet" href="../../assets/css/pages.css" />
+
+    <script src="../../assets/js/copyCode.js"></script>
+    <script src="../../assets/js/formatJScode.js"></script>
+  </head>
+  <body>
+    <main>
+      <h3>Breadth First Search</h3>
+      <p>Breadth-first search explores a graph level by level using a queue. It visits all neighbours of a vertex before moving deeper. Time complexity: O(V + E).</p>
+      <section>
+        <code class="javascript">
+          <pre id="bfs">
+          </pre>
+        </code>
+        <script>
+          document.addEventListener("DOMContentLoaded", () => {
+            const jsCode = `// graph is represented as an adjacency list
+// e.g. graph = [[1, 2], [0, 3], [0, 3], [1, 2]]
+function BFS(graph, start) {
+  const visited = new Array(graph.length).fill(false);
+  const queue = [start];
+  const result = [];
+
+  visited[start] = true;
+
+  while (queue.length > 0) {
+    const vertex = queue.shift();
+    result.push(vertex);
+
+    // visit all unvisited neighbours
+    for (const neighbor of graph[vertex]) {
+      if (!visited[neighbor]) {
+        visited[neighbor] = true;
+        queue.push(neighbor);
+      }
+    }
+  }
+
+  return result;
+}`;
+            const block = document.getElementById("bfs");
+            if (block) {
+              block.textContent = jsCode;
+              const formatter = new JSCodeFormatter();
+              formatter.formatCodeBlock(block);
+            }
+          });
+        </script>
+      </section>
+    </main>
+  </body>
+</html>

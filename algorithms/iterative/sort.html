@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iterative Sort</title>
+
+    <link rel="stylesheet" href="../../assets/css/theme.css" />
+    <link rel="stylesheet" href="../../assets/css/pages.css" />
+
+    <script src="../../assets/js/copyCode.js"></script>
+    <script src="../../assets/js/formatJScode.js"></script>
+  </head>
+  <body>
+    <main>
+      <h3>Iterative Sort</h3>
+      <p>
+        Iterative sorting algorithms sort a collection using loops rather than
+        recursion. All three algorithms below sort in ascending order.
+      </p>
+      <ol>
+        <li>Bubble Sort</li>
+        <p>Repeatedly compare adjacent elements and swap them if out of order. Time complexity: O(n²).</p>
+        <section>
+          <code class="javascript">
+            <pre id="bubble_sort">
+            </pre>
+          </code>
+          <script>
+            document.addEventListener("DOMContentLoaded", () => {
+              const jsCode = `function bubbleSort(arr) {
+  const n = arr.length;
+
+  for (let i = 0; i < n - 1; i++) {
+    for (let j = 0; j < n - i - 1; j++) {
+      if (arr[j] > arr[j + 1]) {
+        // swap adjacent elements if out of order
+        let temp = arr[j];
+        arr[j] = arr[j + 1];
+        arr[j + 1] = temp;
+      }
+    }
+  }
+
+  return arr;
+}`;
+              const block = document.getElementById("bubble_sort");
+              if (block) {
+                block.textContent = jsCode;
+                const formatter = new JSCodeFormatter();
+                formatter.formatCodeBlock(block);
+              }
+            });
+          </script>
+        </section>
+        <li>Selection Sort</li>
+        <p>Repeatedly find the minimum element in the unsorted portion and move it to the front. Time complexity: O(n²).</p>
+        <section>
+          <code class="javascript">
+            <pre id="selection_sort">
+            </pre>
+          </code>
+          <script>
+            document.addEventListener("DOMContentLoaded", () => {
+              const jsCode = `function selectionSort(arr) {
+  const n = arr.length;
+
+  for (let i = 0; i < n - 1; i++) {
+    let minIndex = i;
+
+    // find the minimum element in the remaining unsorted portion
+    for (let j = i + 1; j < n; j++) {
+      if (arr[j] < arr[minIndex]) {
+        minIndex = j;
+      }
+    }
+
+    // swap minimum with the first unsorted element
+    if (minIndex !== i) {
+      let temp = arr[i];
+      arr[i] = arr[minIndex];
+      arr[minIndex] = temp;
+    }
+  }
+
+  return arr;
+}`;
+              const block = document.getElementById("selection_sort");
+              if (block) {
+                block.textContent = jsCode;
+                const formatter = new JSCodeFormatter();
+                formatter.formatCodeBlock(block);
+              }
+            });
+          </script>
+        </section>
+        <li>Insertion Sort</li>
+        <p>Build the sorted array one element at a time by inserting each element into its correct position. Time complexity: O(n²) worst case, O(n) best case.</p>
+        <section>
+          <code class="javascript">
+            <pre id="insertion_sort">
+            </pre>
+          </code>
+          <script>
+            document.addEventListener("DOMContentLoaded", () => {
+              const jsCode = `function insertionSort(arr) {
+  const n = arr.length;
+
+  for (let i = 1; i < n; i++) {
+    const key = arr[i];
+    let j = i - 1;
+
+    // shift elements greater than key one position to the right
+    while (j >= 0 && arr[j] > key) {
+      arr[j + 1] = arr[j];
+      j--;
+    }
+
+    arr[j + 1] = key;
+  }
+
+  return arr;
+}`;
+              const block = document.getElementById("insertion_sort");
+              if (block) {
+                block.textContent = jsCode;
+                const formatter = new JSCodeFormatter();
+                formatter.formatCodeBlock(block);
+              }
+            });
+          </script>
+        </section>
+      </ol>
+    </main>
+  </body>
+</html>
